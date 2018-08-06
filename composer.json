@@ -1,0 +1,23 @@
+{
+    "name": "forevermatt/readable-unit-tests-php",
+    "description": "A Gherkin-based PHP unit-testing framework",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "forevermatt",
+            "email": "forevermatt@users.noreply.github.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "ReadableUnitTests\\": "src/"
+        }
+    },
+    "require": {
+        "behat/gherkin": "^4.5"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-master"
+    }
+}
