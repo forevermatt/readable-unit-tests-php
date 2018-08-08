@@ -1,6 +1,5 @@
 Feature: Adding numbers
 
   Scenario: Adding two numbers
-    Given I start with the number 2
-    When I add 3 to it
+    When I add 2 and 3
     Then the result should be 5
