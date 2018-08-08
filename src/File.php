@@ -5,6 +5,8 @@ use Webmozart\Assert\Assert;
 
 class File
 {
+    const TESTS_FOLDER_NAME = 'tests';
+
     protected $folderPath;
     protected $relativeFilePath;
 
@@ -25,6 +27,6 @@ class File
 
     public function isFileToTest()
     {
-        return strpos($this->relativeFilePath, 'test' . DIRECTORY_SEPARATOR) !== 0;
+        return strpos($this->relativeFilePath, self::TESTS_FOLDER_NAME . DIRECTORY_SEPARATOR) !== 0;
     }
 }
