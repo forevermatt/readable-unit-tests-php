@@ -6,13 +6,14 @@ use Webmozart\Assert\Assert;
 
 class TestImplementation
 {
-    /** @var string */
-    private $path;
+    /** @var File */
+    private $fileToTest;
     
-    public function __construct(string $path)
+    public function __construct(File $fileToTest)
     {
-        $realPath = realpath($path);
-        Assert::fileExists($realPath);
-        $this->path = $realPath;
+        $this->fileToTest = $fileToTest;
+    
+        $path = $fileToTest->getPathToTestImplementation();
+        Assert::fileExists($path);
     }
 }

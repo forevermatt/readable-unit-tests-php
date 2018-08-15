@@ -37,29 +37,8 @@ class Test
      */
     public function run()
     {
-        if (! $this->fileToTest->hasTestSpecification()) {
-            return sprintf(
-                'No test specification file found for %s. Expected path: %s',
-                $this->fileToTest->getRelativePath(),
-                $this->fileToTest->getPathToTestSpecification()
-            );
-        }
-        
-        if (! $this->fileToTest->hasTestImplementation()) {
-            return sprintf(
-                'No test implementation file found for %s. Expected path: %s',
-                $this->fileToTest->getRelativePath(),
-                $this->fileToTest->getPathToTestImplementation()
-            );
-        }
-        
-        $this->testSpecification = new TestSpecification(
-            $this->fileToTest->getPathToTestSpecification()
-        );
-        
-        $this->testImplementation = new TestImplementation(
-            $this->fileToTest->getPathToTestImplementation()
-        );
+        $this->testSpecification = new TestSpecification($this->fileToTest);
+        $this->testImplementation = new TestImplementation($this->fileToTest);
         
         return $this->runScenarios();
     }

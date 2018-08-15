@@ -6,21 +6,23 @@ use Webmozart\Assert\Assert;
 
 class TestSpecification
 {
-    /** @var string */
-    private $path;
+    /** @var File */
+    private $fileToTest;
     
     /**
      * @var FeatureNode
      */
     private $feature;
     
-    public function __construct(string $path)
+    public function __construct(File $fileToTest)
     {
-        $realPath = realpath($path);
-        Assert::fileExists($realPath);
-        $this->path = $realPath;
-        $feature = self::parseSpecification($this->path);
-        Assert::notNull($feature, 'No feature found in test spec.');
+        $this->fileToTest = $fileToTest;
+        
+        $path = $fileToTest->getPathToTestSpecification();
+        Assert::fileExists($path);
+        
+        $feature = self::parseSpecification($path);
+        Assert::notNull($feature, 'No feature found in test specification.');
         $this->feature = $feature;
     }
     
