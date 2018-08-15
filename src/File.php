@@ -6,6 +6,7 @@ use Webmozart\Assert\Assert;
 class File
 {
     const TESTS_FOLDER_NAME = 'tests';
+    const TEST_IMPLEMENTATION_SUFFIX = 'Test.php';
     const TEST_SPECIFICATION_SUFFIX = '.test';
 
     /** @var string */
@@ -39,6 +40,20 @@ class File
         ]);
     }
     
+    public function getPathToTestImplementation()
+    {
+        $relativePathInfo = pathinfo($this->relativeFilePath);
+        return realpath(join('', [
+            $this->folderPath,
+            self::TESTS_FOLDER_NAME,
+            DIRECTORY_SEPARATOR,
+            $relativePathInfo['dirname'],
+            DIRECTORY_SEPARATOR,
+            $relativePathInfo['filename'],
+            self::TEST_IMPLEMENTATION_SUFFIX
+        ]));
+    }
+    
     public function getPathToTestSpecification()
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
@@ -56,6 +71,12 @@ class File
     public function getRelativePath(): string
     {
         return $this->relativeFilePath;
+    }
+    
+    public function hasTestImplementation()
+    {
+        $pathToTestImplementation = $this->getPathToTestImplementation();
+        return file_exists($pathToTestImplementation);
     }
     
     public function hasTestSpecification(): bool

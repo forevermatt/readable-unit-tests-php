@@ -38,17 +38,44 @@ class Test
     public function run()
     {
         if (! $this->fileToTest->hasTestSpecification()) {
-            return 'No test file found for ' . $this->fileToTest->getRelativePath();
+            return sprintf(
+                'No test specification file found for %s. Expected path: %s',
+                $this->fileToTest->getRelativePath(),
+                $this->fileToTest->getPathToTestSpecification()
+            );
+        }
+        
+        if (! $this->fileToTest->hasTestImplementation()) {
+            return sprintf(
+                'No test implementation file found for %s. Expected path: %s',
+                $this->fileToTest->getRelativePath(),
+                $this->fileToTest->getPathToTestImplementation()
+            );
         }
         
         $this->testSpecification = new TestSpecification(
             $this->fileToTest->getPathToTestSpecification()
         );
         
+        $this->testImplementation = new TestImplementation(
+            $this->fileToTest->getPathToTestImplementation()
+        );
         
+        return $this->runScenarios();
+    }
+    
+    protected function runScenarios()
+    {
+        Assert::isInstanceOf($this->testSpecification, TestSpecification::class);
         
-        // TEMP
-        die(var_dump($this->testSpecification));
+        foreach ($this->testSpecification->getScenarios() as $scenario) {
+            
+            
+            // TEMP
+            return var_export($scenario, true);
+            
+        }
+        
         
         
         

@@ -1,20 +1,27 @@
 <?php
 namespace ReadableUnitTests;
 
+use Behat\Gherkin\Node\FeatureNode;
 use Webmozart\Assert\Assert;
 
 class TestSpecification
 {
     /** @var string */
     private $path;
-    private $features;
+    
+    /**
+     * @var FeatureNode
+     */
+    private $feature;
     
     public function __construct(string $path)
     {
         $realPath = realpath($path);
         Assert::fileExists($realPath);
         $this->path = $realPath;
-        $this->features = self::parseSpecification($this->path);
+        $feature = self::parseSpecification($this->path);
+        Assert::notNull($feature, 'No feature found in test spec.');
+        $this->feature = $feature;
     }
     
     protected static function parseSpecification($path)
@@ -40,4 +47,19 @@ class TestSpecification
         
         return $parser->parse(file_get_contents($path));
     }
+    
+    public function getFeature()
+    {
+        return $this->feature;
+    }
+    
+    /**
+     * @return \Behat\Gherkin\Node\ScenarioInterface[]
+     */
+    public function getScenarios()
+    {
+        Assert::isInstanceOf($this->feature, FeatureNode::class);
+        return $this->feature->getScenarios();
+    }
+    
 }
