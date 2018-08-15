@@ -6,7 +6,7 @@ A Gherkin-based PHP unit-testing framework
 - Tests written in Gherkin (aka "plain English")
 - The ability to **unit** test PHP
 - One `.test` file per PHP file/class (containing Gherkin)
-- One corresponding `.test.php` file with the PHP implementation of those test
+- One corresponding `...Test.php` file with the PHP implementation of those test
   steps
 
 ## Example folder/file structure
@@ -18,5 +18,5 @@ A Gherkin-based PHP unit-testing framework
   - tests
     - models
       - Calculator.test (Gherkin)
-      - Calculator.test.php (PHP implementation of test steps)
+      - CalculatorTest.php (PHP implementation of test steps)
 ```
