@@ -67,6 +67,7 @@ class Test
     protected function runScenarios()
     {
         Assert::isInstanceOf($this->testSpecification, TestSpecification::class);
+        Assert::isInstanceOf($this->testImplementation, TestImplementation::class);
         
         foreach ($this->testSpecification->getScenarios() as $scenario) {
             
