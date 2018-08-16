@@ -11,6 +11,7 @@ class Test
     /** @var TestSpecification */
     private $testSpecification;
     
+    /** @var TestImplementation */
     private $testImplementation;
     
     public function __construct(File $fileToTest)
@@ -48,6 +49,7 @@ class Test
         Assert::isInstanceOf($this->testSpecification, TestSpecification::class);
         Assert::isInstanceOf($this->testImplementation, TestImplementation::class);
         
+        $testClass = $this->testImplementation->getTestClassInstance();
         foreach ($this->testSpecification->getScenarios() as $scenario) {
             
             

@@ -16,4 +16,24 @@ class TestImplementation
         $path = $fileToTest->getPathToTestImplementation();
         Assert::fileExists($path);
     }
+    
+    public function getTestClassInstance(): ReadableTest
+    {
+        $this->loadTestImplementationFile();
+        $testClassName = $this->getTestClassName();
+        return new $testClassName();
+    }
+    
+    private function getTestClassName()
+    {
+        $pathToTestImplementation = $this->fileToTest->getPathToTestImplementation();
+        $pathInfo = pathinfo($pathToTestImplementation);
+        return $pathInfo['filename'];
+    }
+    
+    private function loadTestImplementationFile()
+    {
+        $pathToTestImplementation = $this->fileToTest->getPathToTestImplementation();
+        require_once $pathToTestImplementation;
+    }
 }
