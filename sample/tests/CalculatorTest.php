@@ -1,8 +1,9 @@
 <?php
 
+use ReadableUnitTests\ReadableTest;
 use Webmozart\Assert\Assert;
 
-class CalculatorTest
+class CalculatorTest extends ReadableTest
 {
     protected $result;
 
