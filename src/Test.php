@@ -52,16 +52,22 @@ class Test
         $testClass = $this->testImplementation->getTestClassInstance();
         $output = [];
         
-        foreach ($this->testSpecification->getScenarios() as $scenario) {
+        try {
+            foreach ($this->testSpecification->getScenarios() as $scenario) {
+        
+                $output[] = 'Scenario: ' . $scenario->getTitle();
+                foreach ($scenario->getSteps() as $step) {
             
-            $output[] = 'Scenario: ' . $scenario->getTitle();
-            foreach ($scenario->getSteps() as $step) {
-                
-                $output[] = '  ' . $step->getKeyword() . ' ' . $step->getText();
+                    $output[] = '  ' . $step->getKeyword() . ' ' . $step->getText();
+                    $testClass->runFunctionFor($step);
+                }
             }
+            $output[] = PHP_EOL . 'Result: OK';
+            
+        } catch (\Throwable $t) {
+            $output[] = PHP_EOL . $t->getMessage() . PHP_EOL;
+            $output[] = 'Result: FAIL';
         }
-        
-        
         
         return join(PHP_EOL, $output);
     }
