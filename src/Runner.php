@@ -10,6 +10,6 @@ class Runner
         foreach ($folder->getFilesToTest() as $fileToTest) {
             $output[] = Test::testFile($fileToTest);
         }
-        return join(PHP_EOL, $output);
+        return PHP_EOL . join(PHP_EOL, $output) . PHP_EOL;
     }
 }

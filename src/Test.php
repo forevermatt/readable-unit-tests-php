@@ -50,16 +50,19 @@ class Test
         Assert::isInstanceOf($this->testImplementation, TestImplementation::class);
         
         $testClass = $this->testImplementation->getTestClassInstance();
+        $output = [];
+        
         foreach ($this->testSpecification->getScenarios() as $scenario) {
             
-            
-            // TEMP
-            return var_export($scenario, true);
-            
+            $output[] = 'Scenario: ' . $scenario->getTitle();
+            foreach ($scenario->getSteps() as $step) {
+                
+                $output[] = '  ' . $step->getKeyword() . ' ' . $step->getText();
+            }
         }
         
         
         
-        
+        return join(PHP_EOL, $output);
     }
 }
