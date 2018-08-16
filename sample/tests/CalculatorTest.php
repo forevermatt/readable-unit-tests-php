@@ -18,7 +18,8 @@ class CalculatorTest extends ReadableTest
     
     public function whenIAdd2And3()
     {
-        $this->result = 2 + 3;
+        $calculator = new Calculator();
+        $this->result = $calculator->add(2, 3);
     }
 
     /**
@@ -31,6 +32,6 @@ class CalculatorTest extends ReadableTest
     
     public function thenTheResultShouldBe5()
     {
-        Assert::same($this->result, 6);
+        Assert::same($this->result, 5);
     }
 }
