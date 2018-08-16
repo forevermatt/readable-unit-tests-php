@@ -19,6 +19,7 @@ class TestImplementation
     
     public function getTestClassInstance(): ReadableTest
     {
+        $this->loadFileToTest();
         $this->loadTestImplementationFile();
         $testClassName = $this->getTestClassName();
         return new $testClassName();
@@ -29,6 +30,12 @@ class TestImplementation
         $pathToTestImplementation = $this->fileToTest->getPathToTestImplementation();
         $pathInfo = pathinfo($pathToTestImplementation);
         return $pathInfo['filename'];
+    }
+    
+    private function loadFileToTest()
+    {
+        $pathToFile = $this->fileToTest->getPath();
+        require_once $pathToFile;
     }
     
     private function loadTestImplementationFile()

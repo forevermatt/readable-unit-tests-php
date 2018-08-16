@@ -40,6 +40,11 @@ class File
         ]);
     }
     
+    public function getPath()
+    {
+        return $this->folderPath . $this->relativeFilePath;
+    }
+    
     public function getPathToTestImplementation()
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
