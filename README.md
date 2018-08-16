@@ -1,6 +1,13 @@
 # Readable Unit Tests (PHP)
 A Gherkin-based PHP unit-testing framework
 
+## Try it out
+The following command will run the sample tests:
+
+```
+php run-tests.php
+```
+
 ## Goals
 
 - Tests written in Gherkin (aka "plain English")
