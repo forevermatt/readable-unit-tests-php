@@ -52,6 +52,8 @@ class File
             $this->folderPath,
             self::TESTS_FOLDER_NAME,
             DIRECTORY_SEPARATOR,
+            'unit',
+            DIRECTORY_SEPARATOR,
             $relativePathInfo['dirname'],
             DIRECTORY_SEPARATOR,
             $relativePathInfo['filename'],
@@ -65,6 +67,8 @@ class File
         return realpath(join('', [
             $this->folderPath,
             self::TESTS_FOLDER_NAME,
+            DIRECTORY_SEPARATOR,
+            'unit',
             DIRECTORY_SEPARATOR,
             $relativePathInfo['dirname'],
             DIRECTORY_SEPARATOR,
