@@ -7,31 +7,14 @@ class CalculatorTest extends ReadableTest
 {
     protected $result;
 
-    /**
-     * @When I add :firstNumber and :secondNumber
-     */
-    public function whenIAdd($firstNumber, $secondNumber)
+    public function whenIAddNumberAndNumber($firstNumber, $secondNumber)
     {
         $calculator = new Calculator();
         $this->result = $calculator->add($firstNumber, $secondNumber);
     }
     
-    public function whenIAdd2And3()
-    {
-        $calculator = new Calculator();
-        $this->result = $calculator->add(2, 3);
-    }
-
-    /**
-     * @Then the result should be :number
-     */
-    public function thenTheResultShouldBe($number)
+    public function thenTheResultShouldBeNumber($number)
     {
         Assert::same($this->result, $number);
-    }
-    
-    public function thenTheResultShouldBe5()
-    {
-        Assert::same($this->result, 5);
     }
 }
