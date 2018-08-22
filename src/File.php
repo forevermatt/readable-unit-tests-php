@@ -82,18 +82,6 @@ class File
         return $this->relativeFilePath;
     }
     
-    public function hasTestImplementation()
-    {
-        $pathToTestImplementation = $this->getPathToTestImplementation();
-        return file_exists($pathToTestImplementation);
-    }
-    
-    public function hasTestSpecification(): bool
-    {
-        $pathToTestSpec = $this->getPathToTestSpecification();
-        return file_exists($pathToTestSpec);
-    }
-    
     public function isFileToTest(): bool
     {
         return strpos($this->relativeFilePath, self::TESTS_FOLDER_NAME . DIRECTORY_SEPARATOR) !== 0;
