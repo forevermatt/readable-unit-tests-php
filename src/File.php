@@ -48,7 +48,7 @@ class File
     public function getPathToTestImplementation()
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
-        return realpath(join('', [
+        return join('', [
             $this->folderPath,
             self::TESTS_FOLDER_NAME,
             DIRECTORY_SEPARATOR,
@@ -58,13 +58,13 @@ class File
             DIRECTORY_SEPARATOR,
             $relativePathInfo['filename'],
             self::TEST_IMPLEMENTATION_SUFFIX
-        ]));
+        ]);
     }
     
     public function getPathToTestSpecification()
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
-        return realpath(join('', [
+        return join('', [
             $this->folderPath,
             self::TESTS_FOLDER_NAME,
             DIRECTORY_SEPARATOR,
@@ -74,7 +74,7 @@ class File
             DIRECTORY_SEPARATOR,
             $relativePathInfo['filename'],
             self::TEST_SPECIFICATION_SUFFIX
-        ]));
+        ]);
     }
     
     public function getRelativePath(): string
