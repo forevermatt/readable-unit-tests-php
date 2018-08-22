@@ -65,7 +65,7 @@ class Test
             $output[] = PHP_EOL . 'Result: OK';
             
         } catch (\Throwable $t) {
-            $output[] = PHP_EOL . $t->getMessage() . PHP_EOL;
+            $output[] = PHP_EOL . 'ERROR: ' . $t->getMessage() . PHP_EOL;
             $output[] = 'Result: FAIL';
         }
         
