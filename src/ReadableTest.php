@@ -16,7 +16,7 @@ class ReadableTest
         $rawStepWords = $step->getKeyword() . ' ' . $step->getText();
         $lowercased = strtolower($rawStepWords);
         $firstLettersUpper = ucwords($lowercased);
-        $withoutSpaces = preg_replace('/[^A-Za-z0-9]/', '', $firstLettersUpper);
-        return lcfirst($withoutSpaces);
+        $alphaNumeric = preg_replace('/[^A-Za-z0-9]/', '', $firstLettersUpper);
+        return lcfirst($alphaNumeric);
     }
 }
