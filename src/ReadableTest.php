@@ -2,21 +2,26 @@
 namespace ReadableUnitTests;
 
 use Behat\Gherkin\Node\StepNode;
+use Webmozart\Assert\Assert;
 
 class ReadableTest
 {
-    public function runFunctionFor(StepNode $step)
+    public function runFunctionFor(StepNode $gherkinStep)
     {
-        $functionName = $this->getFunctionNameFor($step);
-        $this->$functionName();
-    }
-    
-    private function getFunctionNameFor(StepNode $step)
-    {
-        $rawStepWords = $step->getKeyword() . ' ' . $step->getText();
-        $lowercased = strtolower($rawStepWords);
-        $firstLettersUpper = ucwords($lowercased);
-        $alphaNumeric = preg_replace('/[^A-Za-z0-9]/', '', $firstLettersUpper);
-        return lcfirst($alphaNumeric);
+        $testStep = new TestStep($gherkinStep);
+        $functionName = $testStep->getFunctionName();
+        $arguments = $testStep->getArguments();
+        
+        Assert::methodExists($this, $functionName, sprintf(
+            'Expected the %s class to have a method called "%s"',
+            get_class($this),
+            $functionName
+        ));
+        
+        Assert::notSame(false, call_user_func_array([$this, $functionName], $arguments), sprintf(
+            'Something went wrong when calling %s\'s "%s" method',
+            get_class($this),
+            $functionName
+        ));
     }
 }
