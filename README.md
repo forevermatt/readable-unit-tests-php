@@ -5,7 +5,7 @@ A Gherkin-based PHP unit-testing framework
 The following command will run the sample tests:
 
 ```
-php run-tests.php
+php run-tests.php sample
 ```
 
 ## Goals
