@@ -24,7 +24,7 @@ class Folder
      */
     public function getFilesToTest()
     {
-        $folderPath = realpath($this->realPath) . DIRECTORY_SEPARATOR;
+        $folderPath = $this->realPath . DIRECTORY_SEPARATOR;
         $folderPathLength = strlen($folderPath);
 
         $files = [];
