@@ -20,10 +20,9 @@ php run-tests.php sample
 
 ```
 - project
-  - models
-    - Calculator.php
-  - tests
-    - models
+  - Calculator.php (PHP class to be tested)
+  - tests/
+    - unit/
       - Calculator.test (Gherkin)
       - CalculatorTest.php (PHP implementation of test steps)
 ```
