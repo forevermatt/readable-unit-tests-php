@@ -19,10 +19,6 @@ class TestStep
         $arguments = [];
         
         foreach ($stepTextWords as $word) {
-            if (empty($word)) {
-                continue;
-            }
-        
             if (is_numeric($word)) {
                 $functionName .= 'Number';
                 $arguments[] = $word + 0;
