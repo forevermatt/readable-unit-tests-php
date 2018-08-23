@@ -28,7 +28,7 @@ php run-tests.php sample
 ## Example folder/file structure
 
 ```
-- project
+- sample
   - Calculator.php (PHP class to be tested)
   - tests/
     - unit/
