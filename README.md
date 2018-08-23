@@ -1,8 +1,17 @@
 # Readable Unit Tests (PHP)
 A Gherkin-based PHP unit-testing framework
 
+## Install it
+The easiest way to install Readable Unit Tests (PHP) is to use
+[Composer](https://getcomposer.org/):
+
+```
+composer require --dev forevermatt/readable-unit-tests-php
+```
+
 ## Try it out
-The following command will run the sample tests:
+If you clone this repo, you can use the following command to run the sample
+tests:
 
 ```
 php run-tests.php sample
