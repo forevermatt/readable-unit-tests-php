@@ -30,7 +30,22 @@ class File
         $this->folderPath = $folderPath;
         $this->relativeFilePath = $relativeFilePath;
     }
-
+    
+    public static function createAt(string $pathToFile, string $fileContents)
+    {
+        $pathToFolder = dirname($pathToFile);
+        
+        if (! file_exists($pathToFolder)) {
+            Assert::true(
+                mkdir($pathToFolder, 0x755, true),
+                'Failed to create folder at "' . $pathToFolder . '".'
+            );
+        }
+        
+        $result = file_put_contents($pathToFile, $fileContents);
+        Assert::notSame(false, $result, 'Failed to create "' . $pathToFile . '" file.');
+    }
+    
     public function __toString(): string
     {
         return json_encode([
