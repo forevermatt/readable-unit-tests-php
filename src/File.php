@@ -86,6 +86,9 @@ class File
     
     public function isFileToTest(): bool
     {
-        return strpos($this->relativeFilePath, self::TESTS_FOLDER_NAME . DIRECTORY_SEPARATOR) !== 0;
+        $isPhpFile = (substr($this->relativeFilePath, -4) === '.php');
+        $isNotInTestsFolder = (strpos($this->relativeFilePath, self::TESTS_FOLDER_NAME . DIRECTORY_SEPARATOR) !== 0);
+        
+        return $isPhpFile && $isNotInTestsFolder;
     }
 }
