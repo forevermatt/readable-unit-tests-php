@@ -17,6 +17,15 @@ tests:
 php run-tests.php sample/src
 ```
 
+## Generate skeleton test files
+To generate basic/skeleton test specification and test implementation files, run
+something like the following (replacing `sample/src` with the path to your
+files):
+
+```
+php generate-test-files.php sample/src
+```
+
 ## Goals
 
 - Tests written in Gherkin (aka "plain English")

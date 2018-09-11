@@ -71,4 +71,18 @@ class Test
         
         return join(PHP_EOL, $output);
     }
+    
+    /**
+     * Ensure the test-related files exist for the given File.
+     *
+     * @param File $fileToTest
+     * @return string The result/output from having tried to do so.
+     */
+    public static function generateTestFilesFor(File $fileToTest)
+    {
+        $output = [];
+        $output[] = TestSpecification::createFor($fileToTest);
+        $output[] = TestImplementation::createFor($fileToTest);
+        return join(PHP_EOL, $output);
+    }
 }
