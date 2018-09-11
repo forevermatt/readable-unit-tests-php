@@ -14,7 +14,7 @@ If you clone this repo, you can use the following command to run the sample
 tests:
 
 ```
-php run-tests.php sample
+php run-tests.php sample/src
 ```
 
 ## Goals
@@ -29,7 +29,8 @@ php run-tests.php sample
 
 ```
 - sample
-  - Calculator.php (PHP class to be tested)
+  - src/
+    - Calculator.php (PHP class to be tested)
   - tests/
     - unit/
       - Calculator.test (Gherkin)

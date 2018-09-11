@@ -49,7 +49,8 @@ class File
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
         return join('', [
-            $this->folderPath,
+            dirname($this->folderPath),
+            DIRECTORY_SEPARATOR,
             self::TESTS_FOLDER_NAME,
             DIRECTORY_SEPARATOR,
             'unit',
@@ -65,7 +66,8 @@ class File
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
         return join('', [
-            $this->folderPath,
+            dirname($this->folderPath),
+            DIRECTORY_SEPARATOR,
             self::TESTS_FOLDER_NAME,
             DIRECTORY_SEPARATOR,
             'unit',
