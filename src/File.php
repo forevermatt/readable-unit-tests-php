@@ -49,14 +49,7 @@ class File
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
         return join('', [
-            dirname($this->folderPath),
-            DIRECTORY_SEPARATOR,
-            self::TESTS_FOLDER_NAME,
-            DIRECTORY_SEPARATOR,
-            'unit',
-            DIRECTORY_SEPARATOR,
-            $relativePathInfo['dirname'],
-            DIRECTORY_SEPARATOR,
+            $this->getPathToTestFilesFolder(),
             $relativePathInfo['filename'],
             self::TEST_IMPLEMENTATION_SUFFIX
         ]);
@@ -66,17 +59,24 @@ class File
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
         return join('', [
-            dirname($this->folderPath),
-            DIRECTORY_SEPARATOR,
-            self::TESTS_FOLDER_NAME,
-            DIRECTORY_SEPARATOR,
-            'unit',
-            DIRECTORY_SEPARATOR,
-            $relativePathInfo['dirname'],
-            DIRECTORY_SEPARATOR,
+            $this->getPathToTestFilesFolder(),
             $relativePathInfo['filename'],
             self::TEST_SPECIFICATION_SUFFIX
         ]);
+    }
+    
+    protected function getPathToTestFilesFolder()
+    {
+        $relativePathInfo = pathinfo($this->relativeFilePath);
+        $pathPieces = [
+            dirname($this->folderPath),
+            self::TESTS_FOLDER_NAME,
+            'unit',
+        ];
+        if ($relativePathInfo['dirname'] !== '.') {
+            $pathPieces[] = $relativePathInfo['dirname'];
+        }
+        return join(DIRECTORY_SEPARATOR, $pathPieces) . DIRECTORY_SEPARATOR;
     }
     
     public function getRelativePath(): string
