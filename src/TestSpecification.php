@@ -59,4 +59,25 @@ class TestSpecification
         return $this->class->getScenarios();
     }
     
+    public static function createFor(File $fileToTest)
+    {
+        $pathToTestSpecification = $fileToTest->getPathToTestSpecification();
+        
+        if (file_exists($pathToTestSpecification)) {
+            return sprintf('  "' . $pathToTestSpecification . '" already exists.');
+        }
+        
+        $fileContents = self::createSpecificationContentsFor($fileToTest);
+        File::createAt($pathToTestSpecification, $fileContents);
+        return '+ "' . $pathToTestSpecification . '" created.';
+    }
+    
+    public static function createSpecificationContentsFor(File $fileToTest)
+    {
+        return str_replace(
+            'ClassPath',
+            $fileToTest->getPhpFullClassPath(),
+            file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'specification-template.txt')
+        );
+    }
 }
