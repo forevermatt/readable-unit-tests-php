@@ -50,10 +50,16 @@ class Test
         Assert::isInstanceOf($this->testImplementation, TestImplementation::class);
         
         $testClass = $this->testImplementation->getTestClassInstance();
+        $scenarios = $this->testSpecification->getScenarios();
         $output = [];
         
         try {
-            foreach ($this->testSpecification->getScenarios() as $scenario) {
+            Assert::notEmpty(
+                $scenarios,
+                'No test scenarios found for ' . $this->fileToTest->getPhpFullClassPath()
+            );
+    
+            foreach ($scenarios as $scenario) {
         
                 $output[] = 'Scenario: ' . $scenario->getTitle();
                 foreach ($scenario->getSteps() as $step) {
