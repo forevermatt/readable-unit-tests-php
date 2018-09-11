@@ -91,4 +91,44 @@ class File
         
         return $isPhpFile && $isNotInTestsFolder;
     }
+    
+    public function getPhpFullClassPath()
+    {
+        $namespace = $this->getPhpNamespace();
+        $className = $this->getPhpClassName();
+        
+        if (empty($namespace)) {
+            return '\\' . $className;
+        }
+        return '\\' . $namespace . '\\' . $className;
+    }
+    
+    public function getPhpNamespace()
+    {
+        $phpFileContents = file_get_contents($this->getPath());
+        $namespaceMatches = [];
+        $pregMatchResult = preg_match(
+            '/namespace *([^;]+);/',
+            $phpFileContents,
+            $namespaceMatches
+        );
+        
+        if (empty($pregMatchResult)) {
+            return null;
+        }
+        return trim($namespaceMatches[1]);
+    }
+    
+    public function getPhpClassName()
+    {
+        $phpFileContents = file_get_contents($this->getPath());
+        $classNameMatches = [];
+        $pregMatchResult = preg_match(
+            '/class *([A-Za-z0-9]+)[^{]*{/',
+            $phpFileContents,
+            $classNameMatches
+        );
+        Assert::notEmpty($pregMatchResult, 'Failed to find PHP class name in ' . $this->getPath());
+        return $classNameMatches[1];
+    }
 }
