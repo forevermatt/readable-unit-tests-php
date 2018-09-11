@@ -17,6 +17,28 @@ class TestImplementation
         Assert::fileExists($path);
     }
     
+    public static function createFor(File $fileToTest)
+    {
+        $pathToTestImplementation = $fileToTest->getPathToTestImplementation();
+        
+        if (file_exists($pathToTestImplementation)) {
+            return sprintf('  "' . $pathToTestImplementation . '" already exists.');
+        }
+        
+        $fileContents = self::createImplementationContentsFor($fileToTest);
+        File::createAt($pathToTestImplementation, $fileContents);
+        return '+ "' . $pathToTestImplementation . '" created.';
+    }
+    
+    public static function createImplementationContentsFor(File $fileToTest)
+    {
+        return str_replace(
+            'ClassName',
+            $fileToTest->getPhpClassName() . 'Test',
+            file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'implementation-template.txt')
+        );
+    }
+    
     public function getTestClassInstance(): ReadableTest
     {
         $this->loadFileToTest();
