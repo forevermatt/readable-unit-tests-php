@@ -1,22 +1,33 @@
 <?php
 namespace ReadableUnitTests;
 
+use Psr\Log\LoggerInterface;
 use Webmozart\Assert\Assert;
 
 class Runner
 {
+    /** @var LoggerInterface */
+    protected $logger;
+    
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+    
     public function runTests(string $pathToFolder)
     {
-        $output = [];
         try {
             Assert::notEmpty($pathToFolder, 'Please specify a folder with code to test');
             $folder = new Folder($pathToFolder);
             foreach ($folder->getFilesToTest() as $fileToTest) {
-                $output[] = Test::testFile($fileToTest);
+                Test::testFile($fileToTest, $this->logger);
             }
+            $this->logger->notice('Result: OK');
+            return 0;
         } catch (\Throwable $t) {
-            $output[] = 'ERROR: ' . $t->getMessage();
+            $this->logger->error('ERROR: ' . $t->getMessage());
+            $this->logger->error('Result: FAIL');
+            return 1;
         }
-        return PHP_EOL . join(PHP_EOL, $output) . PHP_EOL;
     }
 }

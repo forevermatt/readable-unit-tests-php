@@ -2,5 +2,7 @@
 
 require('vendor/autoload.php');
 
-$testRunner = new \ReadableUnitTests\Runner();
-echo $testRunner->runTests($argv[1] ?? '');
+$logger = new \Sil\Psr3Adapters\Psr3ConsoleLogger();
+$testRunner = new \ReadableUnitTests\Runner($logger);
+$exitCode = $testRunner->runTests($argv[1] ?? '');
+exit($exitCode);
