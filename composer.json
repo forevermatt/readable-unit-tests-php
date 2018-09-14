@@ -17,7 +17,7 @@
     "require": {
         "behat/behat": "^3.4",
         "behat/gherkin": "^4.5",
-        "ext-json": "^1.5",
+        "ext-json": "*",
         "php": "^7.0",
         "webmozart/assert": "^1.3"
     },

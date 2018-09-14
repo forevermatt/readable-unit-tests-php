@@ -14,7 +14,16 @@ If you clone this repo, you can use the following command to run the sample
 tests:
 
 ```
-php run-tests.php sample
+php run-tests.php sample/src
+```
+
+## Generate skeleton test files
+To generate basic/skeleton test specification and test implementation files, run
+something like the following (replacing `sample/src` with the path to your
+files):
+
+```
+php generate-test-files.php sample/src
 ```
 
 ## Goals
@@ -28,8 +37,9 @@ php run-tests.php sample
 ## Example folder/file structure
 
 ```
-- project
-  - Calculator.php (PHP class to be tested)
+- sample
+  - src/
+    - Calculator.php (PHP class to be tested)
   - tests/
     - unit/
       - Calculator.test (Gherkin)

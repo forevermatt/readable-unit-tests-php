@@ -50,10 +50,16 @@ class Test
         Assert::isInstanceOf($this->testImplementation, TestImplementation::class);
         
         $testClass = $this->testImplementation->getTestClassInstance();
+        $scenarios = $this->testSpecification->getScenarios();
         $output = [];
         
         try {
-            foreach ($this->testSpecification->getScenarios() as $scenario) {
+            Assert::notEmpty(
+                $scenarios,
+                'No test scenarios found for ' . $this->fileToTest->getPhpFullClassPath()
+            );
+    
+            foreach ($scenarios as $scenario) {
         
                 $output[] = 'Scenario: ' . $scenario->getTitle();
                 foreach ($scenario->getSteps() as $step) {
@@ -69,6 +75,20 @@ class Test
             $output[] = 'Result: FAIL';
         }
         
+        return join(PHP_EOL, $output);
+    }
+    
+    /**
+     * Ensure the test-related files exist for the given File.
+     *
+     * @param File $fileToTest
+     * @return string The result/output from having tried to do so.
+     */
+    public static function generateTestFilesFor(File $fileToTest)
+    {
+        $output = [];
+        $output[] = TestSpecification::createFor($fileToTest);
+        $output[] = TestImplementation::createFor($fileToTest);
         return join(PHP_EOL, $output);
     }
 }

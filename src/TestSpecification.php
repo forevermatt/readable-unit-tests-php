@@ -12,7 +12,7 @@ class TestSpecification
     /**
      * @var FeatureNode
      */
-    private $feature;
+    private $class;
     
     public function __construct(File $fileToTest)
     {
@@ -21,9 +21,9 @@ class TestSpecification
         $path = $fileToTest->getPathToTestSpecification();
         Assert::fileExists($path);
         
-        $feature = self::parseSpecification($path);
-        Assert::notNull($feature, 'No feature found in test specification.');
-        $this->feature = $feature;
+        $class = self::parseSpecification($path);
+        Assert::notNull($class, 'No class found in test specification.');
+        $this->class = $class;
     }
     
     protected static function parseSpecification($path)
@@ -32,7 +32,7 @@ class TestSpecification
         
         $keywords = new \Behat\Gherkin\Keywords\ArrayKeywords([
             'en' => [
-                'feature'          => 'Feature',
+                'feature'          => 'Class',
                 'background'       => 'Background',
                 'scenario'         => 'Scenario',
                 'scenario_outline' => 'Scenario Outline|Scenario Template',
@@ -50,18 +50,34 @@ class TestSpecification
         return $parser->parse(file_get_contents($path));
     }
     
-    public function getFeature()
-    {
-        return $this->feature;
-    }
-    
     /**
      * @return \Behat\Gherkin\Node\ScenarioInterface[]
      */
     public function getScenarios()
     {
-        Assert::isInstanceOf($this->feature, FeatureNode::class);
-        return $this->feature->getScenarios();
+        Assert::isInstanceOf($this->class, FeatureNode::class);
+        return $this->class->getScenarios();
     }
     
+    public static function createFor(File $fileToTest)
+    {
+        $pathToTestSpecification = $fileToTest->getPathToTestSpecification();
+        
+        if (file_exists($pathToTestSpecification)) {
+            return sprintf('  "' . $pathToTestSpecification . '" already exists.');
+        }
+        
+        $fileContents = self::createSpecificationContentsFor($fileToTest);
+        File::createAt($pathToTestSpecification, $fileContents);
+        return '+ "' . $pathToTestSpecification . '" created.';
+    }
+    
+    public static function createSpecificationContentsFor(File $fileToTest)
+    {
+        return str_replace(
+            'ClassPath',
+            $fileToTest->getPhpFullClassPath(),
+            file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . 'specification-template.txt')
+        );
+    }
 }
