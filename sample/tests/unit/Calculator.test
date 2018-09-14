@@ -1,4 +1,4 @@
-Feature: Adding numbers
+Class: \Calculator
 
   Scenario: Adding two numbers
     When I add 2 and 3

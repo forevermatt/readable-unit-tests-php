@@ -1,0 +1,6 @@
+Class: ClassPath
+
+  #Scenario: Some scenario to test
+  #  Given some starting condition is in place
+  #  When I do something
+  #  Then the result should be such-and-such

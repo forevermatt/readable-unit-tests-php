@@ -30,7 +30,22 @@ class File
         $this->folderPath = $folderPath;
         $this->relativeFilePath = $relativeFilePath;
     }
-
+    
+    public static function createAt(string $pathToFile, string $fileContents)
+    {
+        $pathToFolder = dirname($pathToFile);
+        
+        if (! file_exists($pathToFolder)) {
+            Assert::true(
+                mkdir($pathToFolder, 0x755, true),
+                'Failed to create folder at "' . $pathToFolder . '".'
+            );
+        }
+        
+        $result = file_put_contents($pathToFile, $fileContents);
+        Assert::notSame(false, $result, 'Failed to create "' . $pathToFile . '" file.');
+    }
+    
     public function __toString(): string
     {
         return json_encode([
@@ -49,13 +64,7 @@ class File
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
         return join('', [
-            $this->folderPath,
-            self::TESTS_FOLDER_NAME,
-            DIRECTORY_SEPARATOR,
-            'unit',
-            DIRECTORY_SEPARATOR,
-            $relativePathInfo['dirname'],
-            DIRECTORY_SEPARATOR,
+            $this->getPathToTestFilesFolder(),
             $relativePathInfo['filename'],
             self::TEST_IMPLEMENTATION_SUFFIX
         ]);
@@ -65,16 +74,24 @@ class File
     {
         $relativePathInfo = pathinfo($this->relativeFilePath);
         return join('', [
-            $this->folderPath,
-            self::TESTS_FOLDER_NAME,
-            DIRECTORY_SEPARATOR,
-            'unit',
-            DIRECTORY_SEPARATOR,
-            $relativePathInfo['dirname'],
-            DIRECTORY_SEPARATOR,
+            $this->getPathToTestFilesFolder(),
             $relativePathInfo['filename'],
             self::TEST_SPECIFICATION_SUFFIX
         ]);
+    }
+    
+    protected function getPathToTestFilesFolder()
+    {
+        $relativePathInfo = pathinfo($this->relativeFilePath);
+        $pathPieces = [
+            dirname($this->folderPath),
+            self::TESTS_FOLDER_NAME,
+            'unit',
+        ];
+        if ($relativePathInfo['dirname'] !== '.') {
+            $pathPieces[] = $relativePathInfo['dirname'];
+        }
+        return join(DIRECTORY_SEPARATOR, $pathPieces) . DIRECTORY_SEPARATOR;
     }
     
     public function getRelativePath(): string
@@ -84,6 +101,49 @@ class File
     
     public function isFileToTest(): bool
     {
-        return strpos($this->relativeFilePath, self::TESTS_FOLDER_NAME . DIRECTORY_SEPARATOR) !== 0;
+        $isPhpFile = (substr($this->relativeFilePath, -4) === '.php');
+        $isNotInTestsFolder = (strpos($this->relativeFilePath, self::TESTS_FOLDER_NAME . DIRECTORY_SEPARATOR) !== 0);
+        
+        return $isPhpFile && $isNotInTestsFolder;
+    }
+    
+    public function getPhpFullClassPath()
+    {
+        $namespace = $this->getPhpNamespace();
+        $className = $this->getPhpClassName();
+        
+        if (empty($namespace)) {
+            return '\\' . $className;
+        }
+        return '\\' . $namespace . '\\' . $className;
+    }
+    
+    public function getPhpNamespace()
+    {
+        $phpFileContents = file_get_contents($this->getPath());
+        $namespaceMatches = [];
+        $pregMatchResult = preg_match(
+            '/namespace *([^;]+);/',
+            $phpFileContents,
+            $namespaceMatches
+        );
+        
+        if (empty($pregMatchResult)) {
+            return null;
+        }
+        return trim($namespaceMatches[1]);
+    }
+    
+    public function getPhpClassName()
+    {
+        $phpFileContents = file_get_contents($this->getPath());
+        $classNameMatches = [];
+        $pregMatchResult = preg_match(
+            '/class *([A-Za-z0-9]+)[^{]*{/',
+            $phpFileContents,
+            $classNameMatches
+        );
+        Assert::notEmpty($pregMatchResult, 'Failed to find PHP class name in ' . $this->getPath());
+        return $classNameMatches[1];
     }
 }
