@@ -1,6 +1,7 @@
 <?php
 namespace ReadableUnitTests;
 
+use Psr\Log\LoggerInterface;
 use Webmozart\Assert\Assert;
 
 class Test
@@ -25,57 +26,47 @@ class Test
      * @param File $fileToTest
      * @return string The result/output from having tried to run the test.
      */
-    public static function testFile(File $fileToTest)
+    public static function testFile(File $fileToTest, LoggerInterface $logger)
     {
         $test = new Test($fileToTest);
-        return $test->run();
+        return $test->run($logger);
     }
     
     /**
      * Run this test.
      *
-     * @return string The result/output.
+     * @param LoggerInterface $logger
      */
-    public function run()
+    public function run(LoggerInterface $logger)
     {
         $this->testSpecification = new TestSpecification($this->fileToTest);
         $this->testImplementation = new TestImplementation($this->fileToTest);
         
-        return $this->runScenarios();
+        $this->runScenarios($logger);
     }
     
-    protected function runScenarios()
+    protected function runScenarios(LoggerInterface $logger)
     {
         Assert::isInstanceOf($this->testSpecification, TestSpecification::class);
         Assert::isInstanceOf($this->testImplementation, TestImplementation::class);
         
         $testClass = $this->testImplementation->getTestClassInstance();
         $scenarios = $this->testSpecification->getScenarios();
-        $output = [];
         
-        try {
-            Assert::notEmpty(
-                $scenarios,
-                'No test scenarios found for ' . $this->fileToTest->getPhpFullClassPath()
-            );
-    
-            foreach ($scenarios as $scenario) {
+        Assert::notEmpty(
+            $scenarios,
+            'No test scenarios found for ' . $this->fileToTest->getPhpFullClassPath()
+        );
         
-                $output[] = 'Scenario: ' . $scenario->getTitle();
-                foreach ($scenario->getSteps() as $step) {
+        foreach ($scenarios as $scenario) {
             
-                    $output[] = '  ' . $step->getKeyword() . ' ' . $step->getText();
-                    $testClass->runFunctionFor($step);
-                }
+            $logger->info('Scenario: ' . $scenario->getTitle());
+            foreach ($scenario->getSteps() as $step) {
+                
+                $logger->info('  ' . $step->getKeyword() . ' ' . $step->getText());
+                $testClass->runFunctionFor($step);
             }
-            $output[] = PHP_EOL . 'Result: OK';
-            
-        } catch (\Throwable $t) {
-            $output[] = PHP_EOL . 'ERROR: ' . $t->getMessage() . PHP_EOL;
-            $output[] = 'Result: FAIL';
         }
-        
-        return join(PHP_EOL, $output);
     }
     
     /**
