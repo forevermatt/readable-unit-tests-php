@@ -17,17 +17,19 @@ class Runner
     public function runTests(string $pathToFolder)
     {
         try {
+            $this->logger->info('');
             Assert::notEmpty($pathToFolder, 'Please specify a folder with code to test');
             $folder = new Folder($pathToFolder);
             foreach ($folder->getFilesToTest() as $fileToTest) {
                 Test::testFile($fileToTest, $this->logger);
             }
-            $this->logger->notice('Result: OK');
+            $this->logger->notice(PHP_EOL . 'Result: OK');
             return 0;
         } catch (\Throwable $t) {
-            $this->logger->error('ERROR: ' . $t->getMessage());
-            $this->logger->error('Result: FAIL');
+            $this->logger->error(PHP_EOL . 'ERROR: ' . $t->getMessage());
+            $this->logger->error(PHP_EOL . 'Result: FAIL');
             return 1;
         }
+        $this->logger->info('');
     }
 }
