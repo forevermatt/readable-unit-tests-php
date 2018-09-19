@@ -25,7 +25,7 @@ class StepParser
             
             if (self::isStringDelimiter($word[0])) {
                 $functionName .= 'String';
-                $arguments[] = $word;
+                $arguments[] = trim($word, $word[0]); // Trim off the string delimiters.
                 continue;
             }
             

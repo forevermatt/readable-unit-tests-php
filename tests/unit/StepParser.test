@@ -4,3 +4,4 @@ Class: \ReadableUnitTests\StepParser
     Given a step that contains a string
     When I parse that step
     Then the result should have the word String where that string was
+      And that string should be in the list of arguments

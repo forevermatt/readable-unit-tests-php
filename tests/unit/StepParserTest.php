@@ -37,4 +37,19 @@ class StepParserTest extends ReadableTest
         
         Assert::same($this->resultingFunctionName, $expectedFunctionName);
     }
+    
+    public function andThatStringShouldBeInTheListOfArguments()
+    {
+        $matches = [];
+        $pregMatchResult = preg_match('/"([^"]*)"/', $this->stepText, $matches);
+        Assert::same($pregMatchResult, 1, 'Failed to find the string in the step text');
+        Assert::true(
+            in_array($matches[1], $this->resultingArguments, true),
+            sprintf(
+                'Failed to find that string (%s) in the list of arguments: %s',
+                $matches[1],
+                var_export($this->resultingArguments, true)
+            )
+        );
+    }
 }
