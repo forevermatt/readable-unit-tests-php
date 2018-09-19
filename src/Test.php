@@ -39,10 +39,14 @@ class Test
      */
     public function run(LoggerInterface $logger)
     {
-        $this->testSpecification = new TestSpecification($this->fileToTest);
-        $this->testImplementation = new TestImplementation($this->fileToTest);
-        
-        $this->runScenarios($logger);
+        try {
+            $this->testSpecification = new TestSpecification($this->fileToTest);
+            $this->testImplementation = new TestImplementation($this->fileToTest);
+    
+            $this->runScenarios($logger);
+        } catch (MissingTestFileException $e) {
+            $logger->warning('WARNING: ' . $e->getMessage());
+        }
     }
     
     protected function runScenarios(LoggerInterface $logger)
