@@ -13,40 +13,10 @@ class StepParser
     
     public function __construct(string $stepKeyword, string $stepText)
     {
-        $stepTextTokens = [];
-        
-        $tempToken = '';
-        for ($i = 0; $i < strlen($stepText); $i++) {
-            $character = $stepText[$i];
-            
-            if (self::isWhiteSpace($character)) {
-                if (! empty($tempToken)) {
-                    $stepTextTokens[] = $tempToken;
-                    $tempToken = '';
-                }
-                continue;
-            }
-            
-            if (self::isStringDelimiter($character)) {
-                $nextStringDelimiterIndex = strpos($stepText, $character, $i + 1);
-                $stringLength = ($nextStringDelimiterIndex - $i) + 1;
-                $stepTextTokens[] = substr($stepText, $i, $stringLength);
-                
-                $i += $stringLength;
-                continue;
-            }
-    
-            $tempToken .= $character;
-        }
-        if (! empty($tempToken)) {
-            $stepTextTokens[] = $tempToken;
-            $tempToken = '';
-        }
-        
         $functionName = strtolower($stepKeyword);
         $arguments = [];
         
-        foreach ($stepTextTokens as $word) {
+        foreach (self::tokenize($stepText) as $word) {
             if (is_numeric($word)) {
                 $functionName .= 'Number';
                 $arguments[] = $word + 0;
@@ -66,6 +36,40 @@ class StepParser
         
         $this->functionName = $functionName;
         $this->arguments = $arguments;
+    }
+    
+    public static function tokenize(string $stepText)
+    {
+        $stepTextTokens = [];
+        
+        $tempToken = '';
+        for ($i = 0; $i < strlen($stepText); $i++) {
+            $character = $stepText[$i];
+            
+            if (self::isWhiteSpace($character)) {
+                if ($tempToken !== '') {
+                    $stepTextTokens[] = $tempToken;
+                    $tempToken = '';
+                }
+                continue;
+            }
+            
+            if (self::isStringDelimiter($character)) {
+                $nextStringDelimiterIndex = strpos($stepText, $character, $i + 1);
+                $stringLength = ($nextStringDelimiterIndex - $i) + 1;
+                $stepTextTokens[] = substr($stepText, $i, $stringLength);
+                
+                $i += $stringLength;
+                continue;
+            }
+            
+            $tempToken .= $character;
+        }
+        if (! empty($tempToken)) {
+            $stepTextTokens[] = $tempToken;
+        }
+        
+        return $stepTextTokens;
     }
     
     public static function isStringDelimiter(string $character)
