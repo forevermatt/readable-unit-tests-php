@@ -1,0 +1,6 @@
+Class: \ReadableUnitTests\StepParser
+
+  Scenario: Parsing a step that contains a string
+    Given a step that contains a string
+    When I parse that step
+    Then the result should have the word String where that string was
