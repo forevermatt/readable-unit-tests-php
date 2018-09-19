@@ -4,7 +4,7 @@ namespace ReadableUnitTests;
 use Behat\Gherkin\Node\FeatureNode;
 use Webmozart\Assert\Assert;
 
-class TestImplementation
+class TestImplementation extends TestFile
 {
     /** @var File */
     private $fileToTest;
@@ -14,7 +14,7 @@ class TestImplementation
         $this->fileToTest = $fileToTest;
     
         $path = $fileToTest->getPathToTestImplementation();
-        Assert::fileExists($path);
+        self::assertTestFileExists($path);
     }
     
     public static function createFor(File $fileToTest)

@@ -4,7 +4,7 @@ namespace ReadableUnitTests;
 use Behat\Gherkin\Node\FeatureNode;
 use Webmozart\Assert\Assert;
 
-class TestSpecification
+class TestSpecification extends TestFile
 {
     /** @var File */
     private $fileToTest;
@@ -19,7 +19,7 @@ class TestSpecification
         $this->fileToTest = $fileToTest;
         
         $path = $fileToTest->getPathToTestSpecification();
-        Assert::fileExists($path);
+        self::assertTestFileExists($path);
         
         $class = self::parseSpecification($path);
         Assert::notNull($class, 'No class found in test specification.');
