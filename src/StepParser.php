@@ -29,9 +29,7 @@ class StepParser
                 continue;
             }
             
-            $lowerCaseWord = strtolower($word);
-            $alphaNumericWord = preg_replace('/[^A-Za-z0-9]/', '', $lowerCaseWord);
-            $functionName .= ucfirst($alphaNumericWord);
+            $functionName .= self::formatForFunctionName($word);
         }
         
         $this->functionName = $functionName;
@@ -76,6 +74,13 @@ class StepParser
     {
         Assert::length($character, 1);
         return in_array($character, ['"', "'"], true);
+    }
+    
+    public static function formatForFunctionName(string $word)
+    {
+        $lowerCaseWord = strtolower($word);
+        $alphaNumericWord = preg_replace('/[^A-Za-z0-9]/', '', $lowerCaseWord);
+        return ucfirst($alphaNumericWord);
     }
     
     public static function isWhiteSpace(string $character)
