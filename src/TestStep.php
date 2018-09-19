@@ -13,25 +13,10 @@ class TestStep
     
     public function __construct(StepNode $gherkinStep)
     {
-        $stepTextWords = explode(' ', $gherkinStep->getText());
+        $stepParser = new StepParser($gherkinStep->getKeyword(), $gherkinStep->getText());
         
-        $functionName = strtolower($gherkinStep->getKeyword());
-        $arguments = [];
-        
-        foreach ($stepTextWords as $word) {
-            if (is_numeric($word)) {
-                $functionName .= 'Number';
-                $arguments[] = $word + 0;
-                continue;
-            }
-            
-            $lowerCaseWord = strtolower($word);
-            $alphaNumericWord = preg_replace('/[^A-Za-z0-9]/', '', $lowerCaseWord);
-            $functionName .= ucfirst($alphaNumericWord);
-        }
-        
-        $this->functionName = $functionName;
-        $this->arguments = $arguments;
+        $this->functionName = $stepParser->getFunctionName();
+        $this->arguments = $stepParser->getArguments();
     }
     
     public function getFunctionName()
